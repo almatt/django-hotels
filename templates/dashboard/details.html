@@ -1,0 +1,49 @@
+{% load static from staticfiles %}
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <script
+			  src="https://code.jquery.com/jquery-3.2.1.min.js"
+			  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+			  crossorigin="anonymous"></script>
+    <script src="{% static 'index.js'%}"></script>
+    <title>Document</title>
+</head>
+<body>
+<div class="wr">
+    <div class="hotel">
+        <h2 class="title">{{hotel.name}}</h2>
+        <img src="{{hotel.img.url}}" alt="" class="pic">
+        <div class="description">{{hotel.description}}</div>
+        <div class="add-info">{{hotel.city}}</div>
+        <div class="add-info">{{hotel.min_price}}</div>
+        {% if advs|length > 0 %}
+            {% for adv in advs %}
+                <div class="adv"> - {{adv.description}}</div>
+            {% endfor %}
+        {% endif %}
+        <div class="rate">
+            <div class="rate-inner" style="width:{{rate}}%;"></div>
+        </div>
+        {%if not rate_exist %}
+            <form id="rate" action="{% url 'dashboard:rate' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" value="{{hotel.id}}" name="id">
+                <select name="rate" id="">
+                    <option value="1">1 звезда</option>
+                    <option value="2">2 звезды</option>
+                    <option value="3">3 звезды</option>
+                    <option value="4">4 звезды</option>
+                    <option value="5">5 звезд</option>
+                </select>
+                <input type="submit" value="Оценить">
+            </form>
+        {% endif %}
+    </div>
+</div>
+</body>
+</html>
